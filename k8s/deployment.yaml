@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devops_project_flask-deployment
+  name: devops-project-flask-deployment
   labels:
-    app: devops_project_flask
+    app: devops-project-flask
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: devops_project_flask
+      app: devops-project-flask
   template:
     metadata:
       labels:
-        app: devops_project_flask
+        app: devops-project-flask
     spec:
       containers:
-        - name: devops_project_flask
+        - name: devops-project-flask
           image: ilianamiladinova/devops_project_flask:0.0.2
           ports:
             - containerPort: 5000
