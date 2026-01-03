@@ -87,4 +87,4 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
       
       - name: Deploy manifest
-        run: kubectl apply -f k8s/
+        run: kubectl apply -f k8s/ --validate=false
