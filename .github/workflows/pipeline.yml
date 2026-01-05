@@ -67,3 +67,4 @@ jobs:
       
       - name: Push Docker Image
         run: docker push ilianamiladinova/devops_project_flask:0.0.2
+  
