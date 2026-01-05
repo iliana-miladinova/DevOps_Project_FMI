@@ -99,13 +99,10 @@ jobs:
           cluster_name: devops-project
           wait: 30s   
 
-      - name: Load Docker image into Kind
-        run: |
-          kind load docker-image ilianamiladinova/devops_project_flask:0.0.2 --name devops-project
-
       - name: Deploy with Helm
         run: |
-          helm upgrade --install devops-project helm/devops-project --set image.tag=0.0.2
+          helm upgrade --install devops-project helm/devops-project \
+          --set image.repository=ilianamiladinova/devops_project_flask --set image.tag=0.0.2
 
       - name: Verify deployment
         run: |
