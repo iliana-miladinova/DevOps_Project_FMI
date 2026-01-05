@@ -85,9 +85,12 @@ The project deploys the application to kubernetes by using manifest or a Helm ch
 
 To apply the kubernetes manifests run the following commands:
 kubectl apply -f k8s/deployment.yaml
+
 kubectl apply -f k8s/service.yaml
+
 Verify that the pods are running by running this command:
 kubectl get pods
+
 Check the service: kubectl get svc
 
 To access the application in Cloud Shell we use post-forwarding:
@@ -103,8 +106,10 @@ kubectl port-forward service/devops-project-flask-service 8080:80
 
 * Validate syntax:
 helm lint helm/devops-project
+
 * Deploy:
 helm install devops-app ./devops-project        
+
 or if we already have an installation:
 helm upgrade devops-app ./devops-project
 
@@ -153,6 +158,7 @@ git clone https://github.com/iliana-miladinova/DevOps_Project_FMI.git
 cd DevOps_Project_FMI
 * Run with Docker:
 docker build -t devops_project_flask:0.0.2 .
+
 docker run -d -p 5000:5000 --name devops-flask devops_project_flask:0.0.2
 
 * Access the app:
