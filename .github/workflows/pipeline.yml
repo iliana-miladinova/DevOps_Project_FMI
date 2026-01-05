@@ -106,5 +106,5 @@ jobs:
 
       - name: Verify deployment
         run: |
-          kubectl rollout status deployment/devops-project -n default
+          kubectl rollout status deployment/devops-app-devops-project -n default
           kubectl get pods -n default
