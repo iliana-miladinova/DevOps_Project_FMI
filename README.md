@@ -60,11 +60,11 @@ Exposes port 5000
 Container start command: python app.py
 ### Docker image
 The docker image is build with this command: 
-docker build -t ilianamiladinova/devops_project_flask:0.0.2 .
+``` docker build -t ilianamiladinova/devops_project_flask:0.0.2 . ```
 And is pushed to Docker Hub with this:
-docker push ilianamiladinova/devops_project_flask:0.0.2
+``` docker push ilianamiladinova/devops_project_flask:0.0.2 ```
 Start the container in Cloud Shell:
-docker run -d -p 5000:5000 --name devops-flask ilianamiladinova/devops_project_flask:0.0.2  
+``` docker run -d -p 5000:5000 --name devops-flask ilianamiladinova/devops_project_flask:0.0.2 ```
 
 ## Kubernetes
 The project deploys the application to kubernetes by using manifest or a Helm chart
@@ -84,17 +84,17 @@ The project deploys the application to kubernetes by using manifest or a Helm ch
     * Target port: 5000
 
 To apply the kubernetes manifests run the following commands:
-kubectl apply -f k8s/deployment.yaml
+``` kubectl apply -f k8s/deployment.yaml ```
 
-kubectl apply -f k8s/service.yaml
+``` kubectl apply -f k8s/service.yaml ```
 
 Verify that the pods are running by running this command:
-kubectl get pods
+``` kubectl get pods ```
 
-Check the service: kubectl get svc
+Check the service: ``` kubectl get svc ```
 
 To access the application in Cloud Shell we use post-forwarding:
-kubectl port-forward service/devops-project-flask-service 8080:80
+``` kubectl port-forward service/devops-project-flask-service 8080:80 ```
 
 ### Helm Chart
 * Located in helm/devops-project
@@ -105,16 +105,16 @@ kubectl port-forward service/devops-project-flask-service 8080:80
     * liveness and readiness probe
 
 * Validate syntax:
-helm lint helm/devops-project
+``` helm lint helm/devops-project ```
 
 * Deploy:
-helm install devops-app ./devops-project        
+``` helm install devops-app ./devops-project  ```
 
 or if we already have an installation:
-helm upgrade devops-app ./devops-project
+``` helm upgrade devops-app ./devops-project ```
 
 To access the application in Cloud Shell we use post-forwarding:
-kubectl port-forward service/devops-app-devops-project-service 8080:80
+``` kubectl port-forward service/devops-app-devops-project-service 8080:80 ```
 
 ### CI/CD pipline 
 The pipeline is located in .github/workflows/pipeline.yml. It is triggered on push and pull requests events on the main branch and feature/* branches.
@@ -154,13 +154,13 @@ Run automatically in the pipeline
 
 ### Installation / Quick Start
 * Clone the repository:
-git clone https://github.com/iliana-miladinova/DevOps_Project_FMI.git
+``` git clone https://github.com/iliana-miladinova/DevOps_Project_FMI.git ```
 
 cd DevOps_Project_FMI
 * Run with Docker:
-docker build -t devops_project_flask:0.0.2 .
+``` docker build -t devops_project_flask:0.0.2 . ```
 
-docker run -d -p 5000:5000 --name devops-flask devops_project_flask:0.0.2
+``` docker run -d -p 5000:5000 --name devops-flask devops_project_flask:0.0.2 ```
 
 * Access the app:
-http://localhost:5000
+``` http://localhost:5000 ```
