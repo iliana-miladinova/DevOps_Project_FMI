@@ -1,4 +1,4 @@
-name: CI pipeline
+name: CI/CD pipeline
 
 on:
   push:
@@ -68,16 +68,43 @@ jobs:
       - name: Push Docker Image
         run: docker push ilianamiladinova/devops_project_flask:0.0.2
 
-  trivy:
-    name: Trivy Scan
+  helm:
+    name: Helm validation
     runs-on: ubuntu-latest
-    needs: [ docker ]
+    needs: [ security]
     steps:
-      - name: Run Trivy Scan
-        uses: aquasecurity/trivy-action@master
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Helm Lint
+        run: helm lint helm/devops-project      
+      
+      - name: Helm Template
+        run: helm template devops-project helm/devops-project
+
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: [docker, helm]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Kind cluster
+        uses: helm/kind-action@v1.10.0
         with:
-          image-ref: ilianamiladinova/devops_project_flask:0.0.2
-          format: 'table'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
-          ignore-unfixed: true
+          cluster_name: devops-project
+          wait: 30s   
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install devops-project helm/devops-project \
+          --set image.repository=ilianamiladinova/devops_project_flask --set image.tag=0.0.2
+
+      - name: Verify deployment
+        run: |
+          kubectl rollout status deployment/devops-project -n default
+          kubectl get pods -n default
