@@ -84,3 +84,27 @@ jobs:
       
       - name: Helm Template
         run: helm template devops-project helm/devops-project
+        
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: [ docker, helm ]
+    steps:
+    - name: Set up Kind
+      uses: helm/kind-action@v1.10.0
+      with:
+        cluster-name: devops-project
+        wait: 120
+      
+    - name: Load Docker image into kind
+      run: |
+        kind load docker-image ilianamiladinova/devops_project_flask:0.0.2 --name devops-project
+    
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install devops-project helm/devops-project --set image.tag=0.0.2
+    
+    - name: Verify Deployment
+      run: |
+        kubectl rollout status deployment/devops-project -n default
+        kubectl get pods
