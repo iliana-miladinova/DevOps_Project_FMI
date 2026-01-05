@@ -67,4 +67,17 @@ jobs:
       
       - name: Push Docker Image
         run: docker push ilianamiladinova/devops_project_flask:0.0.2
-  
+
+  trivy:
+    name: Trivy Scan
+    runs-on: ubuntu-latest
+    needs: [ docker ]
+    steps:
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ilianamiladinova/devops_project_flask:0.0.2
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
