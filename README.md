@@ -1,6 +1,49 @@
 # DevOps_Project_FMI
 Final project for the DevOps course @ Faculty of Mathematics and Informatics, Sofia University
 
+This project is a small Flask backend service. The implementation is minimal so that the focus remains on DevOps workflows and infrastructure automation.
+
+## Service Overview
+The backend has 2 endpoint:
+* ``` GET \ ```  - returns ``` Hello from Flask app ```
+* ``` GET \status ``` - return a small JSON payload 
+
+```
+{
+  "status": "ok"
+}
+```
+## Repository Structure
+
+```
+.
+├─ src/
+|   |_ requirements.txt      # Python dependencies
+|   |_...   
+|
+├─ k8s/
+│  ├─ deployment.yaml        # Kubernetes Deployment manifest
+│  └─ service.yaml           # Kubernetes Service manifest
+├─ helm/
+│  └─ devops-project/        # Helm chart for deployment
+├─ .github/
+│  └─ workflows/
+│     └─ pipeline.yml        # CI/CD pipeline definition
+├─ Dockerfile                # Container definition
+└─ README.md                 # Documentation
+```
+
+## Technical Stack
+| **Domain**           | **Tools Used**         |                                           
+| ---------------------| ---------------------- | 
+| Code                 | Python 3.12, Flask     |
+| Containerization     | Docker                 |
+| Orchestration        | Kubernetes             |
+| IaC                  | Helm                   |
+| CI/CD                | GitHub Actions         |
+| Security (SAST)      | Bandit                 |
+| Security (Container) | Trivy                  | 
+
 ## Branching Strategy
 The project has a simple branching strategy:
 * main - stable branch
@@ -83,6 +126,10 @@ The pipeline is located in .github/workflows/pipeline.yml. It is triggered on pu
 * Docker 
     * Builds the Docker image.
     * Pushes the image to Docker Hub
+*  Trivy Scan
+    * Scans the docker image 
+    * exit-code: 1 -> the pipeline fails if vulnerabilities of the Critical or High severities are found
+
 #### CD
 After the code passes security checks we use Infrastructure as Code to deploy the application
 ##### Jobs:
@@ -91,3 +138,22 @@ After the code passes security checks we use Infrastructure as Code to deploy th
     * Creates a temporary Kubernetes cluster with kind
     * Deploys the application with Helm
     * Verifies the deployment 
+
+### T-shaped solution
+The project follows a T-Shaped DevOps strategy - Broad Coverage accross the entire SDLC and Deep-Dive in Security(DevSecOps)
+#### Security (DevSecOps)
+The project ensures security at multiple layers:
+* bandit - scans Python code for common issues (hardcoded secrets, unsafe functions, shell injection) 
+* trivy - checks the Docker image for OS and dependency vulnerabilities
+Run automatically in the pipeline
+
+### Installation / Quick Start
+* Clone the repository:
+git clone https://github.com/iliana-miladinova/DevOps_Project_FMI.git
+cd DevOps_Project_FMI
+* Run with Docker:
+docker build -t devops_project_flask:0.0.2 .
+docker run -d -p 5000:5000 --name devops-flask devops_project_flask:0.0.2
+
+* Access the app:
+http://localhost:5000
