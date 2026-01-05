@@ -155,6 +155,7 @@ Run automatically in the pipeline
 ### Installation / Quick Start
 * Clone the repository:
 git clone https://github.com/iliana-miladinova/DevOps_Project_FMI.git
+
 cd DevOps_Project_FMI
 * Run with Docker:
 docker build -t devops_project_flask:0.0.2 .
